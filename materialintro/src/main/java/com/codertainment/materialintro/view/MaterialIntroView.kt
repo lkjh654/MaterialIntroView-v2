@@ -308,6 +308,8 @@ class MaterialIntroView : RelativeLayout {
 
   var skipButtonMargin = Utils.dpToPx(16)
 
+  private var dismissed = false
+
   constructor(context: Context) : super(context) {
     init()
   }
@@ -541,6 +543,11 @@ class MaterialIntroView : RelativeLayout {
    * Dismiss Material Intro View
    */
   fun dismiss() {
+    //prevent from firing dismiss() method multiple times when quickly clicking the layer
+    if (dismissed) {
+      return
+    }
+    dismissed = true
     if (showOnlyOnce && userClickAsDisplayed) {
       context.preferencesManager.setDisplayed(viewId)
     }
