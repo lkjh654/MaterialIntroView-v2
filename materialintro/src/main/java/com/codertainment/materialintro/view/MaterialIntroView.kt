@@ -305,6 +305,7 @@ class MaterialIntroView : RelativeLayout {
   lateinit var skipButton: MaterialButton
 
   private var statusBarHeight = 0
+  private var myVisibleBottom = 0
 
   var skipButtonMargin = Utils.dpToPx(16)
 
@@ -497,6 +498,7 @@ class MaterialIntroView : RelativeLayout {
       val rect = android.graphics.Rect()
       activity.window.decorView.getWindowVisibleDisplayFrame(rect)
       statusBarHeight = rect.top
+      myVisibleBottom = rect.bottom
     }
 
     viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -651,11 +653,11 @@ class MaterialIntroView : RelativeLayout {
       when (skipLocation) {
         SkipLocation.BOTTOM_LEFT -> {
           leftMargin = defaultMargin
-          topMargin = s.y - skipButton.measuredHeight - defaultMargin
+          topMargin = myVisibleBottom - skipButton.measuredHeight - defaultMargin
         }
         SkipLocation.BOTTOM_RIGHT -> {
           leftMargin = s.x - skipButton.measuredWidth - defaultMargin
-          topMargin = s.y - skipButton.measuredHeight - defaultMargin
+          topMargin = myVisibleBottom - skipButton.measuredHeight - defaultMargin
         }
         SkipLocation.TOP_LEFT -> {
           leftMargin = defaultMargin
