@@ -2,6 +2,8 @@ package com.codertainment.materialintro.sequence
 
 import android.app.Activity
 import android.os.Handler
+import android.view.View
+import android.view.ViewGroup
 import com.codertainment.materialintro.MaterialIntroConfiguration
 import com.codertainment.materialintro.animation.MaterialIntroListener
 import com.codertainment.materialintro.utils.materialIntro
@@ -31,6 +33,8 @@ class MaterialIntroSequence private constructor(private val activity: Activity) 
   }
 
   private var mivs = ArrayList<MaterialIntroView>()
+  private var interceptingLayer: View? = null
+  private val decorViewGroup get() = activity.window.decorView as ViewGroup
 
   private var counter = 0
   private var isMivShowing = false
@@ -56,6 +60,7 @@ class MaterialIntroSequence private constructor(private val activity: Activity) 
       isMivShowing = false
       if (counter == mivs.size) {
         materialIntroSequenceListener?.onCompleted()
+        removeClicksInterceptingLayer()
       } else {
         nextIntro()
       }
@@ -97,6 +102,7 @@ class MaterialIntroSequence private constructor(private val activity: Activity) 
     }
     counter = mivs.size
     materialIntroSequenceListener?.onCompleted()
+    removeClicksInterceptingLayer()  
   }
 
   fun start() {
@@ -113,11 +119,26 @@ class MaterialIntroSequence private constructor(private val activity: Activity) 
     if (isSkipped && persistSkip) {
       skip()
     } else if (counter < mivs.size) {
+      if (counter == 0) {
+        addClicksInterceptingLayer()
+      }
       isMivShowing = true
       handler.post {
         mivs[counter++].show(activity)
       }
     }
+  }
+
+  private fun addClicksInterceptingLayer() {
+    interceptingLayer = View(activity).apply {
+      isClickable = true
+    }
+
+    decorViewGroup.addView(interceptingLayer, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+}
+
+  private fun removeClicksInterceptingLayer() {
+     decorViewGroup.removeView(interceptingLayer)
   }
 }
 
