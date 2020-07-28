@@ -13,6 +13,7 @@ import com.codertainment.materialintro.shape.FocusGravity
 import com.codertainment.materialintro.shape.Shape
 import com.codertainment.materialintro.shape.ShapeType
 import com.codertainment.materialintro.utils.Constants
+import com.codertainment.materialintro.utils.Utils
 import com.google.android.material.button.MaterialButton
 
 data class MaterialIntroConfiguration(
@@ -68,6 +69,7 @@ data class MaterialIntroConfiguration(
   var materialIntroListener: MaterialIntroListener? = null,
 
   var skipLocation: SkipLocation = SkipLocation.BOTTOM_LEFT,
+  var skipButtonMargin: Int = Utils.dpToPx(16),
   var skipText: CharSequence = "Skip",
   var skipButtonStyling: MaterialButton.() -> Unit = {}
 )

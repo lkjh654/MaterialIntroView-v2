@@ -732,6 +732,7 @@ class MaterialIntroView : RelativeLayout {
     this.skipLocation = config.skipLocation
     this.skipText = config.skipText
     this.skipButtonStyling = config.skipButtonStyling
+    this.skipButtonMargin = config.skipButtonMargin
   }
 
   private val infoParent
