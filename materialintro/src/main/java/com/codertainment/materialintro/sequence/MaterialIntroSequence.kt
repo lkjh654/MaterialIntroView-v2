@@ -9,6 +9,7 @@ import com.codertainment.materialintro.animation.MaterialIntroListener
 import com.codertainment.materialintro.utils.materialIntro
 import com.codertainment.materialintro.utils.preferencesManager
 import com.codertainment.materialintro.view.MaterialIntroView
+import java.util.*
 
 /*
  * Created by Shripal Jain
@@ -18,16 +19,16 @@ import com.codertainment.materialintro.view.MaterialIntroView
 class MaterialIntroSequence private constructor(private val activity: Activity) {
 
   companion object {
-    private val sequences = ArrayList<MaterialIntroSequence>()
+    private val sequences = WeakHashMap<Activity, MaterialIntroSequence>()
 
     fun getInstance(activity: Activity): MaterialIntroSequence {
-      val found = sequences.filter { it.activity == activity }
-      return if (found.isEmpty()) {
+      val found = sequences[activity]
+      return if (found == null) {
         val mis = MaterialIntroSequence(activity)
-        sequences.add(mis)
+        sequences[activity] = mis
         mis
       } else {
-        found[0]
+        found
       }
     }
   }
